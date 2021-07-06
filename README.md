@@ -1,10 +1,12 @@
 # Daylio Reports
 This project aims to give a monthly/yearly report of the data given from the Daylio App.
-The data comes from downloading a csv file from the Daylio app.
 
 ## What is Daylio
 Daylio is a sudo-journal where you can enter activities,moods, and notes.
 
+## CSV Files
+The data comes from downloading a csv file from the Daylio app. I included a fake entry csv file to show what it would look like.
+I am not including any of my actual files due to privacy.
 ## This project is personalized
 Daylio is very customizable so if you downloaded your entries into a csv and entered it into this program
 errors would likely occur
@@ -17,7 +19,7 @@ Here is a run down on how I use Daylio so people can modify
 * The file path also needs to change to your computer
 
 ## Daylio Month Features
-** Program runs by running program and then entering to console `streamlit run` and then tab until you find the file
+** Program runs by running program and then entering to console `streamlit run` and then tab until you find the file **
 * Enter any month that there is data
 * Mood tally chart
 * Average Mood (numerically)
