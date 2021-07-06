@@ -19,7 +19,7 @@ Here is a run down on how I use Daylio so people can modify
 * The file path also needs to change to your computer
 
 ## Daylio Month Features
-** Program runs by running program and then entering to console `streamlit run` and then tab until you find the file **
+**Program runs by running program and then entering to console `streamlit run` and then tab until you find the file**
 * Enter any month that there is data
 * Mood tally chart
 * Average Mood (numerically)
