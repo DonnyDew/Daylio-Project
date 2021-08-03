@@ -11,7 +11,7 @@ import datetime
 
 filepath = 'C:\\Users\\Donald Robbins\\Desktop\\Python Files\\hello_ds\\Daylio Project\\daylio_export_'
 
-with open(f'{filepath}2021_06_11.csv',encoding = 'utf8') as f:
+with open(f'{filepath}2021_08_02.csv',encoding = 'utf8') as f:
     data = csv.reader(f)
     entry = {} #full_date,date,weekday,time,mood,activties,note,month,year
     for rank,row in enumerate(data):
@@ -33,13 +33,13 @@ for i in entry:
     elif entry[i]['mood'] == 'good':
         moodScore = 4
     elif entry[i]['mood'] == 'Solid':
-        moodScore = 3.5
-    elif entry[i]['mood'] == 'okay':
         moodScore = 3
-    elif entry[i]['mood'] == 'meh':
+    elif entry[i]['mood'] == 'okay':
         moodScore = 2
-    elif entry[i]['mood'] == 'bad':
+    elif entry[i]['mood'] == 'meh':
         moodScore = 1
+    elif entry[i]['mood'] == 'bad':
+        moodScore = 0
     else:
         print("Error with moodScore: " + entry[i]['mood'])
     entry[i]['moodScore'] = moodScore
@@ -85,6 +85,15 @@ exerciseFrame = st.beta_container()
 #-------------------------------------------------------------------------------------
 with firstFrame:
     st.title(f"Welcome to your {year} Yearly Report")
+def getAvgMood4Year(year):
+    moodScore = 0
+    totalDays = 0
+    for i in entry:
+        if entry[i]['year'] == year:
+            totalDays += 1
+            moodScore += entry[i]['moodScore']
+    avgMood = moodScore / totalDays
+    return avgMood
 def getMonthMood(month):
     moodList = []
     moodScore = 0
@@ -116,14 +125,6 @@ def getMoodChart():
         family="Courier New, monospace",
         size=14,
         color="orangered"))
-    totalMood = 0
-    activeMon = 0
-    for i in moodList:
-        if i != 0:
-            totalMood += i
-            activeMon += 1
-    avgMood = totalMood/activeMon
-    
     moodList.sort()
     for i in range(0,len(moodList)):
         if moodList[i] != 0:
@@ -136,12 +137,13 @@ def getMoodChart():
             lowest.append(f"{k}-{v}")
         if v == moodList[11]:
             highest.append(f"{k}-{v}")
-    return [fig,highest,lowest,avgMood]
+    return [fig,highest,lowest]
 MoodChartData = getMoodChart()
 moodChart = MoodChartData[0]
 bestMonths = MoodChartData[1]
 worstMonths = MoodChartData[2]
-averageMood = MoodChartData[3]
+averageMood = getAvgMood4Year(year)
+
 with moodFrame:
     st.write(moodChart)
     st.subheader(f"The year mood average for {year} is {format(averageMood,'.2f')}")
