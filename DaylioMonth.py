@@ -10,7 +10,7 @@ from datetime import datetime as dt
 import datetime
 filepath = 'C:\\Users\\Donald Robbins\\Desktop\\Python Files\\hello_ds\\Daylio Project\\daylio_export_'
 
-with open(f'{filepath}2021_06_30.csv',encoding = 'utf8') as f:
+with open(f'{filepath}2021_10_15.csv',encoding = 'utf8') as f:
     data = csv.reader(f)
     entry = {} #full_date,date,weekday,time,mood,activties,note,month,year
     for rank,row in enumerate(data):
@@ -32,13 +32,13 @@ for i in entry:
     elif entry[i]['mood'] == 'good':
         moodScore = 4
     elif entry[i]['mood'] == 'Solid':
-        moodScore = 3.5
-    elif entry[i]['mood'] == 'okay':
         moodScore = 3
-    elif entry[i]['mood'] == 'meh':
+    elif entry[i]['mood'] == 'okay':
         moodScore = 2
-    elif entry[i]['mood'] == 'bad':
+    elif entry[i]['mood'] == 'meh':
         moodScore = 1
+    elif entry[i]['mood'] == 'bad':
+        moodScore = 0
     else:
         print("Error with moodScore: " + entry[i]['mood'])
     entry[i]['moodScore'] = moodScore
@@ -263,7 +263,7 @@ def pixelPlot(activity,decision):
                 if moodList[i] == 'none':
                     value = [192,192,192]
                 elif moodList[i] == 'bad':
-                    valuei = [64,64,64]
+                    valuei = [32,33,37]
                 elif moodList[i] == 'meh':
                     value = [0,76,153]
                 elif moodList[i] == 'okay':

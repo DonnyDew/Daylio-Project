@@ -11,7 +11,7 @@ import datetime
 
 filepath = 'C:\\Users\\Donald Robbins\\Desktop\\Python Files\\hello_ds\\Daylio Project\\daylio_export_'
 
-with open(f'{filepath}2021_08_02.csv',encoding = 'utf8') as f:
+with open(f'{filepath}2021_12_01.csv',encoding = 'utf8') as f:
     data = csv.reader(f)
     entry = {} #full_date,date,weekday,time,mood,activties,note,month,year
     for rank,row in enumerate(data):
@@ -142,11 +142,11 @@ MoodChartData = getMoodChart()
 moodChart = MoodChartData[0]
 bestMonths = MoodChartData[1]
 worstMonths = MoodChartData[2]
-averageMood = getAvgMood4Year(year)
+averageMood = float (format(getAvgMood4Year(year),'.2f'))
 
 with moodFrame:
     st.write(moodChart)
-    st.subheader(f"The year mood average for {year} is {format(averageMood,'.2f')}")
+    st.subheader(f"The year mood average for {year} is {averageMood}")
     moodcol1,moodcol2 = st.beta_columns(2)
     moodcol1.subheader("Best month(s): ")
     moodcol2.subheader(' '.join(map(str,bestMonths)))
@@ -214,15 +214,28 @@ def best_of_days(streak=7):
     return scores
 with bestDayFrame:
     st.title("The Best of Days")
-    st.subheader("Best Week")
     bestDayData = best_of_days()
     bestDay = bestDayData[0]
+    secondBestDay = bestDayData[1]
+    thirdBestDay = bestDayData[2]
     worstDay = bestDayData[-1]
+    secondWorstDay = bestDayData[-2]
+    thirdWorstDay = bestDayData[-3]
+    st.subheader("Best Week")
     st.write(f"In {year} the best 7 days were between: {bestDay[1]}-{bestDay[2]}")
     st.write(f"The average score in this period was {bestDay[0]} compared to the average month mood of {averageMood}")
+    
+    st.subheader("Other good weeks")
+    for i in range(1,10):
+        st.write(f"{bestDayData[i][1]}-{bestDayData[i][2]} with average score of {bestDayData[i][0]}")
+    
     st.subheader("Worst Week")
     st.write(f"In {year} the worst 7 days were between: {worstDay[1]}-{worstDay[2]}")
     st.write(f"The average score in this period was {worstDay[0]} compared to the average month mood of {averageMood}")
+    
+    st.subheader("Other bad weeks")
+    for i in range(-2,-11,-1):
+        st.write(f"{bestDayData[i][1]}-{bestDayData[i][2]} with average score of {bestDayData[i][0]}")
 def getImpact(activity):
     monthScore = 0
     timesWithAct = 0
@@ -233,8 +246,8 @@ def getImpact(activity):
                 monthScore += entry[i]['moodScore']
     activityAvg = monthScore/timesWithAct
     impact = activityAvg / averageMood
-    impactChange = impact - 1
-    return format(impactChange,'.2%')
+    impactChange = format((impact - 1) * 100,'.2f')
+    return float(impactChange)
 def getActivityTable():
     yearActDic = {}
     for i in entry:
@@ -284,22 +297,17 @@ with noteFrame:
         notecol1.write(f"{noteItem} appeared in these dates of {year}: ")
         notecol2.write(', '.join(map(str,noteCountData[2])))
 
-def pushUpPlankCount(pushup,plank):
+def pushUpPlankCount(pushup):
     #Pushup and Plank should be user input on how many pushups and how long for planks in minutes
     pushUpCount = 0
-    plankCount = 0
     for i in entry:
         if entry[i]['year'] == year:
             if 'chest / core' in entry[i]['activities']:
                 pushUpCount += pushup
-                plankCount += plank
-    return [pushUpCount,plankCount]
+    return pushUpCount
 with exerciseFrame:
     st.title("Push-Ups and Planks")
     pushups = st.number_input("Enter average number of push-ups",step=5)
-    planks = st.number_input("Enter average plank in minutes",step=1)
-    exerciseData = pushUpPlankCount(pushups,planks)
     st.subheader("Push-ups")
-    st.write(f"{exerciseData[0]} push-ups were done this year")
-    st.subheader("Planks")
-    st.write(f"{exerciseData[1]} minutes of planks were done this year")
+    st.write(f"{pushUpPlankCount(pushups)} push-ups were done this year")
+    
