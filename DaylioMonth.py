@@ -10,7 +10,7 @@ from datetime import datetime as dt
 import datetime
 filepath = 'C:\\Users\\Donald Robbins\\Desktop\\Python Files\\hello_ds\\Daylio Project\\daylio_export_'
 
-with open(f'{filepath}2021_10_15.csv',encoding = 'utf8') as f:
+with open(f'{filepath}2022_04_01.csv',encoding = 'utf8') as f:
     data = csv.reader(f)
     entry = {} #full_date,date,weekday,time,mood,activties,note,month,year
     for rank,row in enumerate(data):

@@ -11,7 +11,7 @@ import datetime
 
 filepath = 'C:\\Users\\Donald Robbins\\Desktop\\Python Files\\hello_ds\\Daylio Project\\daylio_export_'
 
-with open(f'{filepath}2021_12_01.csv',encoding = 'utf8') as f:
+with open(f'{filepath}2022_04_01.csv',encoding = 'utf8') as f:
     data = csv.reader(f)
     entry = {} #full_date,date,weekday,time,mood,activties,note,month,year
     for rank,row in enumerate(data):
@@ -60,7 +60,7 @@ yearList = []
 while year >= countYear:
     yearList.append(countYear)
     countYear += 1
-yearList.reverse()
+
 year = st.selectbox("Choose Year",yearList)
 
 #------------------------------------------------------------------------------------
@@ -126,6 +126,7 @@ def getMoodChart():
         size=14,
         color="orangered"))
     moodList.sort()
+    lowIndex = 0
     for i in range(0,len(moodList)):
         if moodList[i] != 0:
             lowIndex = i #This is to not have the lowest month be one with 0 (which is a month that hasn't happened yet)
@@ -257,7 +258,7 @@ def getActivityTable():
                     yearActDic[act]["Count"] += 1
                 else:
                     yearActDic[act] = {"Count":1,"Impact":0}
-    
+                
     for act in yearActDic:
         yearActDic[act]["Impact"] = getImpact(act)
     
@@ -272,9 +273,35 @@ def getActivityTable():
     Data = {"Act":act,"Count":count,"Impact":impact}
     actTable = pd.DataFrame(Data)
     return actTable
+def getSpecificTable(actList):
+    yearActDic = {}
+    for i in entry:
+        if entry[i]['year'] == year:
+            for act in entry[i]['activities']:
+                if act in actList:
+                    if act in yearActDic:
+                        yearActDic[act]["Count"] += 1
+                    else:
+                        yearActDic[act] = {"Count":1,"Impact":0}
+    for act in yearActDic:
+        yearActDic[act]["Impact"] = getImpact(act)
+    act = []
+    count = []
+    impact = []
+    for key in yearActDic:
+        act.append(key)
+        count.append(yearActDic[key]["Count"])
+        impact.append(yearActDic[key]["Impact"])
+    
+    Data = {"Act":act,"Count":count,"Impact":impact}
+    actTable = pd.DataFrame(Data)
+    return actTable
 with activityFrame:
     st.title("Activity Table")
     st.write(getActivityTable())
+    prayers = ["Scripture","Rosary","Conversation with God","Religious Meditation",
+                "Reflection","Lexio Davina","Memorized Prayer"]
+    st.write(getSpecificTable(prayers))
 def noteCount(keyword):
     count = 0
     dateList = []
